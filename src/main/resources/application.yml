@@ -1,0 +1,36 @@
+server:
+  port: 3000
+
+spring:
+  # 데이터베이스 설정
+  datasource:
+    driverClassName: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521:XE
+    username: BOARD_TEST
+    password: oracle
+
+  # JPA 설정
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true # 실행하는 SQL을 콘솔에 출력
+        format_sql: true # 실행되는 SQL의 들여쓰기 및 줄 개행
+        use_sql_comments: true
+        default_batch_fetch_size: 100
+        #dialect: org.hibernate.dialect.OracleDialect
+    hibernate:
+      ddlAuto: create
+
+  thymeleaf:
+    cache: false # 템플릿 캐시 비활성화 (개발 시 유용)
+    prefix: classpath:/templates/ # 템플릿 파일의 위치
+    suffix: .html # 템플릿 파일의 확장자
+    mode: HTML # Thymeleaf 모드 설정 (HTML, XML 등)
+    encoding: UTF-8 # 템플릿 인코딩 설정
+
+# 로거 설정
+logging:
+  level:
+    org.hibernate.type: trace
+    org.hibernate.orm.jdbc.bind: trace
+    org.thymeleaf: debug

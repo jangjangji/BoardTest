@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main {
+            width: 80%;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"], textarea {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+        }
+
+        textarea {
+            height: 150px;
+            resize: none;
+        }
+
+        a {
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-right: 10px;
+            color: white;
+        }
+
+        #update {
+            background-color: #007bff;
+        }
+
+        #update:hover {
+            background-color: #0056b3;
+        }
+
+        #delete {
+            background-color: #dc3545;
+        }
+
+        #delete:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    <h1>게시물 상세보기</h1>
+    <label for="writer">작성자 :</label>
+    <input type="text" name="writer" id="writer" th:value="${boardData.writer}" disabled>
+
+    <label for="title">제목 :</label>
+    <input type="text" name="title" id="title" th:value="${boardData.title}" disabled>
+
+    <label for="content">내용 :</label>
+    <textarea name="content" id="content" th:text="${boardData.content}" disabled></textarea>
+
+    <a th:href="@{/board/update/{seq}(seq=${boardData.seq})}" id="update">수정</a>
+    <a th:href="@{/board/delete/{seq}(seq=${boardData.seq})}" id="delete">삭제</a>
+</div>
+</body>
+</html>
