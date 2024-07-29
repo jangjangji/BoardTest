@@ -1,13 +1,12 @@
 package org.test.board.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 import org.test.board.entities.BoardData;
 import org.test.board.service.BoardService;
 
@@ -31,12 +30,18 @@ public class BoardController {
         return "board/list";
     }
     @GetMapping("/register")
-    public String register(){
+    public String register(@ModelAttribute RequestBoard form){
         return "board/register";
     }
+
+
+
     @PostMapping("/register")
-    public String registerPs(BoardData boardData){
-        boardService.register(boardData);
+    public String registerPs(@Valid RequestBoard form, Errors errors){
+        if(errors.hasErrors()){
+            return "board/register";
+        }
+        boardService.register(form);
         return "redirect:/board/list";
 
     }

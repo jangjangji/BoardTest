@@ -73,14 +73,23 @@
     </style>
 </head>
 <body>
-<form action="#" th:action="@{/board/register}" method="post">
-    <label for="writer">작성자:</label>
-    <input type="text" name="writer" id="writer" required>
-    <label for="title">제목:</label>
-    <input type="text" name="title" id="title" required>
-    <label for="content">내용:</label>
-    <textarea name="content" id="content" required></textarea>
-    <button type="submit">등록</button>
+<form name="frmLogin" method="POST" th:action="@{/board/register}" autocomplete="off"
+      th:object="${requestBoard}">
+    <label for="writer" th:text="#{작성자}">작성자</label>
+    <input type="text" id="writer" name="writer" th:field="*{writer}">
+    <div class="error" th:each="err : ${#fields.errors('writer')}" th:text="${err}"></div>
+
+    <label for="title" th:text="#{제목}">제목</label>
+    <input type="text" id="title" name="title" th:field="*{title}" >
+    <div class="error" th:each="err : ${#fields.errors('title')}" th:text="${err}"></div>
+
+    <label for="content" th:text="#{내용}">내용</label>
+    <textarea id="content" name="content" th:field="*{content}" ></textarea>
+    <div class="error" th:each="err : ${#fields.errors('content')}" th:text="${err}"></div>
+
+    <div class="buttons">
+        <button type="submit" th:text="#{작성완료}"></button>
+    </div>
 </form>
 </body>
 </html>

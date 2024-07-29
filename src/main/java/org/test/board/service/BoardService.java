@@ -1,8 +1,10 @@
 package org.test.board.service;
 
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.test.board.controllers.RequestBoard;
 import org.test.board.entities.BoardData;
 import org.test.board.repositories.BoardDataRepository;
 
@@ -13,8 +15,9 @@ import java.util.List;
 public class BoardService {
     private final BoardDataRepository boardDataRepository;
     //등록
-    public void register(BoardData boardData) {
-        boardDataRepository.save(boardData);
+    public void register(RequestBoard form) {
+        BoardData boardData = new ModelMapper().map(form,BoardData.class);
+        boardDataRepository.saveAndFlush(boardData);
     }
     //목록
     public List<BoardData> list() {
