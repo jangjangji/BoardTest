@@ -67,7 +67,6 @@ public class BoardController {
         if(errors.hasErrors()){
             return "board/update";
         }
-        BoardData boardData = new ModelMapper().map(form,BoardData.class);
         boardService.update(form);
         return "redirect:/board/list";
     }
