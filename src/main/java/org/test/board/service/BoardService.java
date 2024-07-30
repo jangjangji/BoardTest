@@ -21,6 +21,7 @@ public class BoardService {
     }
     //목록
     public List<BoardData> list() {
+
         return boardDataRepository.findAll(Sort.by(Sort.Direction.DESC, "seq"));
     }
     //게시글 자세히보기
@@ -28,8 +29,21 @@ public class BoardService {
         return boardDataRepository.findById(seq).orElse(null);
     }
     //수정
-    public void update(BoardData boardData) {
-        boardDataRepository.save(boardData);
+    public void update(RequestBoard form) {
+        Long seq = form.getSeq();
+        BoardData boardData = null;
+        if(seq != null){
+            boardData = boardDataRepository.findById(seq).orElse(null);
+            if(boardData != null){
+                boardData.setTitle(form.getTitle());
+                boardData.setContent(form.getContent());
+                boardData.setWriter(form.getWriter());
+            }
+        }
+        if (boardData == null) boardData = new ModelMapper().map(form, BoardData.class);
+        boardDataRepository.saveAndFlush(boardData);
+
+
     }
     public void delete(Long seq) {
         boardDataRepository.deleteById(seq);

@@ -2,13 +2,17 @@ package org.test.board.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.test.board.entities.BoardData;
+import org.test.board.repositories.BoardDataRepository;
 import org.test.board.service.BoardService;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/board")
@@ -16,6 +20,8 @@ import org.test.board.service.BoardService;
 public class BoardController {
     @Autowired
     private final BoardService boardService;
+    @Autowired
+    private BoardDataRepository boardDataRepository;
 
 
     @GetMapping("/detail/{seq}")
@@ -46,16 +52,23 @@ public class BoardController {
 
     }
     @GetMapping("/update/{seq}")
-    public String updateGet(@PathVariable("seq") Long seq, Model model) {
+    public String updateGet(@ModelAttribute RequestBoard board,@PathVariable("seq") Long seq, Model model) {
+        BoardData update = boardDataRepository.findById(seq).orElse(null);
+        board.setSeq(update.getSeq());
+        board.setTitle(update.getTitle());
+        board.setContent(update.getContent());
+        board.setWriter(update.getWriter());
 
-        model.addAttribute("boardData", boardService.detail(seq));
         return "board/update";
     }
 
     @PostMapping("/update")
-    public String updatePost(BoardData boardData) {
-
-        boardService.update(boardData);
+    public String updatePost(@Valid RequestBoard form, Errors errors) {
+        if(errors.hasErrors()){
+            return "board/update";
+        }
+        BoardData boardData = new ModelMapper().map(form,BoardData.class);
+        boardService.update(form);
         return "redirect:/board/list";
     }
 

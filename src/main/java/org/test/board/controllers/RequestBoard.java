@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class RequestBoard {
+    Long seq;
     @NotBlank
     private String title;
     @NotBlank
